@@ -1,8 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { TOOLS, USE_CASES } from "@/lib/tools"
 import { FormState, ToolEntry } from "@/types"
+import { runAudit } from "@/lib/auditEngine"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -23,14 +25,13 @@ const defaultForm: FormState = {
 
 export default function Home() {
   const [form, setForm] = useState<FormState>(defaultForm)
+  const router = useRouter()
 
-  // Load from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem("credex-form")
     if (saved) setForm(JSON.parse(saved))
   }, [])
 
-  // Save to localStorage on every change
   useEffect(() => {
     localStorage.setItem("credex-form", JSON.stringify(form))
   }, [form])
@@ -59,23 +60,29 @@ export default function Home() {
     }))
   }
 
+  const handleRunAudit = () => {
+    const result = runAudit(form)
+    localStorage.setItem("credex-result", JSON.stringify(result))
+    localStorage.setItem("credex-form", JSON.stringify(form))
+    router.push("/results")
+  }
+
   return (
     <main className="max-w-3xl mx-auto p-8">
       <h1 className="text-4xl font-bold mb-2">AI Spend Audit</h1>
       <p className="text-gray-500 mb-8">Find out where you're overpaying on AI tools.</p>
 
-      {/* Tool selector */}
       <div className="mb-6">
-        <Label className="mb-2 block">Which AI tools do you pay for?</Label>
+        <Label className="mb-2 block font-medium">Which AI tools do you pay for?</Label>
         <div className="flex flex-wrap gap-2">
           {TOOLS.map(tool => (
             <button
               key={tool.id}
               onClick={() => addTool(tool.id)}
-              className={`px-3 py-1 rounded-full border text-sm ${
+              className={`px-3 py-1 rounded-full border text-sm transition-all ${
                 form.tools.find(t => t.toolId === tool.id)
                   ? "bg-black text-white border-black"
-                  : "bg-white text-gray-700 border-gray-300"
+                  : "bg-white text-gray-700 border-gray-300 hover:border-black"
               }`}
             >
               {tool.name}
@@ -84,20 +91,24 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Per-tool inputs */}
       {form.tools.map(entry => {
         const tool = TOOLS.find(t => t.id === entry.toolId)!
         return (
           <Card key={entry.toolId} className="mb-4">
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg flex justify-between">
+              <CardTitle className="text-lg flex justify-between items-center">
                 {tool.name}
-                <button onClick={() => removeTool(entry.toolId)} className="text-sm text-red-500">Remove</button>
+                <button
+                  onClick={() => removeTool(entry.toolId)}
+                  className="text-sm text-red-500 font-normal"
+                >
+                  Remove
+                </button>
               </CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-3 gap-4">
               <div>
-                <Label>Plan</Label>
+                <Label className="mb-1 block">Plan</Label>
                 <Select onValueChange={v => updateTool(entry.toolId, "plan", v)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select plan" />
@@ -110,17 +121,19 @@ export default function Home() {
                 </Select>
               </div>
               <div>
-                <Label>Monthly Spend ($)</Label>
+                <Label className="mb-1 block">Monthly Spend ($)</Label>
                 <Input
                   type="number"
+                  min={0}
                   value={entry.monthlySpend}
                   onChange={e => updateTool(entry.toolId, "monthlySpend", Number(e.target.value))}
                 />
               </div>
               <div>
-                <Label>Seats</Label>
+                <Label className="mb-1 block">Seats</Label>
                 <Input
                   type="number"
+                  min={1}
                   value={entry.seats}
                   onChange={e => updateTool(entry.toolId, "seats", Number(e.target.value))}
                 />
@@ -130,32 +143,39 @@ export default function Home() {
         )
       })}
 
-      {/* Team size + use case */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
-        <div>
-          <Label>Team Size</Label>
-          <Input
-            type="number"
-            value={form.teamSize}
-            onChange={e => setForm(prev => ({ ...prev, teamSize: Number(e.target.value) }))}
-          />
+      {form.tools.length > 0 && (
+        <div className="grid grid-cols-2 gap-4 mb-8">
+          <div>
+            <Label className="mb-1 block">Team Size</Label>
+            <Input
+              type="number"
+              min={1}
+              value={form.teamSize}
+              onChange={e => setForm(prev => ({ ...prev, teamSize: Number(e.target.value) }))}
+            />
+          </div>
+          <div>
+            <Label className="mb-1 block">Primary Use Case</Label>
+            <Select onValueChange={v => setForm(prev => ({ ...prev, useCase: v }))}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select use case" />
+              </SelectTrigger>
+              <SelectContent>
+                {USE_CASES.map(u => (
+                  <SelectItem key={u} value={u}>{u}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-        <div>
-          <Label>Primary Use Case</Label>
-          <Select onValueChange={v => setForm(prev => ({ ...prev, useCase: v }))}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select use case" />
-            </SelectTrigger>
-            <SelectContent>
-              {USE_CASES.map(u => (
-                <SelectItem key={u} value={u}>{u}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      )}
 
-      <Button size="lg" className="w-full" disabled={form.tools.length === 0}>
+      <Button
+        size="lg"
+        className="w-full"
+        disabled={form.tools.length === 0}
+        onClick={handleRunAudit}
+      >
         Run My Audit →
       </Button>
     </main>
