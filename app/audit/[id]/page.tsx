@@ -6,15 +6,17 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
 
-export default async function PublicAudit({
-  params,
-}: {
-  params: { id: string }
-}) {
+type Props = {
+  params: Promise<{ id: string }>
+}
+
+export default async function PublicAudit({ params }: Props) {
+  const { id } = await params
+
   const { data, error } = await supabase
     .from("audits")
     .select("result, created_at")
-    .eq("id", params.id)
+    .eq("id", id)
     .eq("is_public", true)
     .single()
 
