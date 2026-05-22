@@ -8,12 +8,38 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function Results() {
   const [result, setResult] = useState<AuditResult | null>(null)
+  const [shareUrl, setShareUrl] = useState<string | null>(null)
+  const [saving, setSaving] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
-    const saved = localStorage.getItem("credex-result")
-    if (!saved) { router.push("/"); return }
-    setResult(JSON.parse(saved))
+    const savedResult = localStorage.getItem("credex-result")
+    const savedForm = localStorage.getItem("credex-form")
+    if (!savedResult) { router.push("/"); return }
+
+    const parsedResult = JSON.parse(savedResult)
+    setResult(parsedResult)
+
+    // Save to Supabase and get shareable ID
+    const form = savedForm ? JSON.parse(savedForm) : {}
+    setSaving(true)
+    fetch("/api/save-audit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tools: form.tools,
+        result: parsedResult,
+        teamSize: form.teamSize,
+        useCase: form.useCase
+      })
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data.id) {
+          setShareUrl(`${window.location.origin}/audit/${data.id}`)
+        }
+      })
+      .finally(() => setSaving(false))
   }, [])
 
   if (!result) return <div className="p-8">Loading...</div>
@@ -32,6 +58,13 @@ export default function Results() {
     return "ℹ️ Review"
   }
 
+  const copyShareUrl = () => {
+    if (shareUrl) {
+      navigator.clipboard.writeText(shareUrl)
+      alert("Link copied!")
+    }
+  }
+
   return (
     <main className="max-w-3xl mx-auto p-8">
       {/* Hero savings */}
@@ -44,9 +77,20 @@ export default function Results() {
         <p className="text-gray-400 text-lg">
           ${result.totalAnnualSavings.toFixed(0)} per year
         </p>
+
+        {/* Share button */}
+        {shareUrl && (
+          <button
+            onClick={copyShareUrl}
+            className="mt-4 text-sm bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition"
+          >
+            🔗 Copy shareable link
+          </button>
+        )}
+        {saving && <p className="mt-4 text-sm text-gray-400">Saving audit...</p>}
       </div>
 
-      {/* Credex CTA for high savings */}
+      {/* Credex CTA */}
       {result.showCredex && (
         <div className="bg-indigo-600 text-white rounded-xl p-6 mb-8">
           <h2 className="text-xl font-bold mb-2">
@@ -95,20 +139,16 @@ export default function Results() {
         </Card>
       ))}
 
-      {/* Already optimal message */}
+      {/* Already optimal */}
       {result.totalMonthlySavings === 0 && (
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 mb-8 text-center">
           <p className="text-2xl mb-2">🎉</p>
           <h3 className="text-lg font-bold text-green-800 mb-1">You're spending well!</h3>
-          <p className="text-green-700">Your AI tool stack looks optimized. We'll notify you when new savings apply.</p>
+          <p className="text-green-700">Your AI tool stack looks optimized.</p>
         </div>
       )}
 
-      <Button
-        variant="outline"
-        className="w-full"
-        onClick={() => router.push("/")}
-      >
+      <Button variant="outline" className="w-full" onClick={() => router.push("/")}>
         ← Run Another Audit
       </Button>
     </main>
