@@ -29,3 +29,19 @@ RLS issue took time to debug — had to read terminal logs carefully to spot the
 
 **Plan for tomorrow:**
 Add Anthropic API for AI-generated summary. Add email capture with Resend. Polish the UI.
+
+## Day 3 — 2026-05-23
+
+**Hours worked:** 5
+
+**What I did:**
+Added AI-generated audit summary using Groq (llama-3.3-70b). Built email capture modal component. Created lead capture API route that saves email to Supabase and sends transactional email via Resend. Switched from Anthropic API to Groq due to insufficient credits.
+
+**What I learned:**
+Groq is a free alternative to Anthropic API with OpenAI-compatible SDK. Resend makes transactional email dead simple — just one API call. Environment variables must be restarted to take effect in Next.js.
+
+**Blockers / what I'm stuck on:**
+Anthropic API had no credits — switched to Groq. Resend free tier only sends to verified emails initially.
+
+**Plan for tomorrow:**
+Add Open Graph tags for shareable URLs. Polish UI. Add abuse protection. Deploy to Vercel.
