@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation"
 import { AuditResult, ToolAuditResult } from "@/lib/auditEngine"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import EmailCapture from "@/components/EmailCapture"
 
 export default function Results() {
   const [result, setResult] = useState<AuditResult | null>(null)
   const [shareUrl, setShareUrl] = useState<string | null>(null)
   const [summary, setSummary] = useState<string | null>(null)
   const [loadingSummary, setLoadingSummary] = useState(false)
+  const [showEmailCapture, setShowEmailCapture] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -168,9 +170,24 @@ export default function Results() {
         </div>
       )}
 
+      <Button
+        className="w-full mb-4"
+        onClick={() => setShowEmailCapture(true)}
+      >
+        📧 Get my full report by email
+      </Button>
+
       <Button variant="outline" className="w-full" onClick={() => router.push("/")}>
         ← Run Another Audit
       </Button>
+
+      {showEmailCapture && (
+        <EmailCapture
+          auditId={shareUrl ? shareUrl.split("/").pop() ?? null : null}
+          totalSavings={result.totalMonthlySavings}
+          onClose={() => setShowEmailCapture(false)}
+        />
+      )}
     </main>
   )
 }
