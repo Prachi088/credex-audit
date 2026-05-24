@@ -72,7 +72,7 @@ export default async function PublicAudit({ params }: Props) {
 
       <div className="mt-8 text-center">
         <a href="/" className="text-indigo-600 hover:underline text-sm">
-          Run your own audit →
+          Run your own audit
         </a>
       </div>
     </main>
