@@ -27,9 +27,12 @@ export default function Home() {
   const [form, setForm] = useState<FormState>(defaultForm)
   const router = useRouter()
 
-  useEffect(() => {
+ useEffect(() => {
     const saved = localStorage.getItem("credex-form")
-    if (saved) setForm(JSON.parse(saved))
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      setForm(parsed)
+    }
   }, [])
 
   useEffect(() => {
@@ -70,7 +73,7 @@ export default function Home() {
   return (
     <main className="max-w-3xl mx-auto p-8">
       <h1 className="text-4xl font-bold mb-2">AI Spend Audit</h1>
-      <p className="text-gray-500 mb-8">Find out where you're overpaying on AI tools.</p>
+      <p className="text-gray-500 mb-8">Find out where you&apos;re overpaying on AI tools.</p>
 
       <div className="mb-6">
         <Label className="mb-2 block font-medium">Which AI tools do you pay for?</Label>
