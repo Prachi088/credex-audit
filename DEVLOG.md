@@ -45,3 +45,19 @@ Anthropic API had no credits — switched to Groq. Resend free tier only sends t
 
 **Plan for tomorrow:**
 Add Open Graph tags for shareable URLs. Polish UI. Add abuse protection. Deploy to Vercel.
+
+## Day 4 — 2026-05-24
+
+**Hours worked:** 4
+
+**What I did:**
+Added Open Graph tags to layout and shareable audit page. Fixed shareable page TSX errors. Deployed to Vercel at credex-audit-pink.vercel.app. Full end-to-end flow working on live URL.
+
+**What I learned:**
+Next.js generateMetadata function adds OG tags for dynamic pages. Vercel deployment is seamless with GitHub — just add env variables and deploy. PowerShell uses different commands than CMD for file operations.
+
+**Blockers / what I'm stuck on:**
+TSX errors in audit/[id]/page.tsx took time — old code kept mixing with new. Fixed by deleting and recreating the file.
+
+**Plan for tomorrow:**
+Write 5 tests for audit engine. Set up GitHub Actions CI. Write all required docs (GTM, ECONOMICS, REFLECTION, ARCHITECTURE, PRICING_DATA, PROMPTS, TESTS, LANDING_COPY, METRICS).
