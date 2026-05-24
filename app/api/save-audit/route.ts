@@ -9,7 +9,7 @@ const supabase = createClient(
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { tools, result, teamSize, useCase } = body
+    const { tools, result, teamSize } = body
 
     const { data, error } = await supabase
       .from("audits")

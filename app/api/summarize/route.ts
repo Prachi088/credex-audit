@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const { result, useCase, teamSize } = await req.json()
 
     const toolSummary = result.perTool
-      .map((t: any) => `${t.toolName}: $${t.currentSpend}/mo, savings $${t.savings}/mo — ${t.recommendedAction}`)
+       .map((t: {toolName: string, currentSpend: number, savings: number, recommendedAction: string}) => `${t.toolName}: $${t.currentSpend}/mo, savings $${t.savings}/mo — ${t.recommendedAction}`)
       .join("\n")
 
     const prompt = `You are an AI spend analyst. Write a 100-word personalized audit summary for a team.

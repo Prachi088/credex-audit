@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js"
 import { notFound } from "next/navigation"
+import Link from "next/link"
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -8,6 +9,16 @@ const supabase = createClient(
 
 type Props = {
   params: Promise<{ id: string }>
+}
+
+type ToolResult = {
+  toolId: string
+  toolName: string
+  severity: string
+  currentSpend: number
+  savings: number
+  recommendedAction: string
+  reason: string
 }
 
 export default async function PublicAudit({ params }: Props) {
@@ -43,7 +54,7 @@ export default async function PublicAudit({ params }: Props) {
       </div>
 
       <h2 className="text-2xl font-bold mb-4">Breakdown</h2>
-      {result.perTool.map((tool: any) => (
+      {result.perTool.map((tool: ToolResult) => (
         <div key={tool.toolId} className="border rounded-xl p-4 mb-4">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-semibold text-lg">{tool.toolName}</h3>
@@ -71,9 +82,9 @@ export default async function PublicAudit({ params }: Props) {
       ))}
 
       <div className="mt-8 text-center">
-        <a href="/" className="text-indigo-600 hover:underline text-sm">
+        <Link href="/" className="text-indigo-600 hover:underline text-sm">
           Run your own audit
-        </a>
+        </Link>
       </div>
     </main>
   )

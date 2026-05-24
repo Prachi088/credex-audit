@@ -52,7 +52,7 @@ export default function EmailCapture({ auditId, totalSavings, onClose }: Props) 
           <>
             <h2 className="text-2xl font-bold mb-2">Get your full report</h2>
             <p className="text-gray-500 mb-6">
-              We'll email you the complete audit with recommendations.
+              We&apos;ll email you the complete audit with recommendations.
               {totalSavings > 500 && " A Credex advisor will also reach out about your $" + totalSavings + "/mo savings opportunity."}
             </p>
 

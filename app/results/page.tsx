@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { AuditResult, ToolAuditResult } from "@/lib/auditEngine"
 import { Button } from "@/components/ui/button"
@@ -15,7 +15,7 @@ export default function Results() {
   const [showEmailCapture, setShowEmailCapture] = useState(false)
   const router = useRouter()
 
-  useEffect(() => {
+  const loadAudit = useCallback(async () => {
     const savedResult = localStorage.getItem("credex-result")
     const savedForm = localStorage.getItem("credex-form")
     if (!savedResult) { router.push("/"); return }
@@ -25,24 +25,21 @@ export default function Results() {
     setResult(parsedResult)
 
     // Save to Supabase
-    fetch("/api/save-audit", {
+    const saveRes = await fetch("/api/save-audit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         tools: form.tools,
         result: parsedResult,
         teamSize: form.teamSize,
-        useCase: form.useCase
       })
     })
-      .then(r => r.json())
-      .then(data => {
-        if (data.id) setShareUrl(`${window.location.origin}/audit/${data.id}`)
-      })
+    const saveData = await saveRes.json()
+    if (saveData.id) setShareUrl(`${window.location.origin}/audit/${saveData.id}`)
 
     // Get AI summary
     setLoadingSummary(true)
-    fetch("/api/summarize", {
+    const sumRes = await fetch("/api/summarize", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -51,10 +48,14 @@ export default function Results() {
         useCase: form.useCase
       })
     })
-      .then(r => r.json())
-      .then(data => setSummary(data.summary))
-      .finally(() => setLoadingSummary(false))
-  }, [])
+    const sumData = await sumRes.json()
+    setSummary(sumData.summary)
+    setLoadingSummary(false)
+  }, [router])
+
+  useEffect(() => {
+    loadAudit()
+  }, [loadAudit])
 
   if (!result) return <div className="p-8">Loading...</div>
 
@@ -81,7 +82,6 @@ export default function Results() {
 
   return (
     <main className="max-w-3xl mx-auto p-8">
-      {/* Hero */}
       <div className="bg-black text-white rounded-2xl p-8 mb-8 text-center">
         <p className="text-gray-400 mb-2">You could save</p>
         <p className="text-6xl font-bold mb-1">
@@ -101,7 +101,6 @@ export default function Results() {
         )}
       </div>
 
-      {/* AI Summary */}
       <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-6 mb-8">
         <h2 className="text-sm font-semibold text-indigo-600 uppercase tracking-wide mb-3">
           AI Analysis
@@ -113,11 +112,10 @@ export default function Results() {
         )}
       </div>
 
-      {/* Credex CTA */}
       {result.showCredex && (
         <div className="bg-indigo-600 text-white rounded-xl p-6 mb-8">
           <h2 className="text-xl font-bold mb-2">
-            You're leaving serious money on the table 💸
+            You&apos;re leaving serious money on the table 💸
           </h2>
           <p className="text-indigo-200 mb-4">
             Credex sells discounted AI credits — Cursor, Claude, ChatGPT Enterprise
@@ -129,7 +127,6 @@ export default function Results() {
         </div>
       )}
 
-      {/* Per tool breakdown */}
       <h2 className="text-2xl font-bold mb-4">Your Audit Breakdown</h2>
       {result.perTool.map((tool: ToolAuditResult) => (
         <Card key={tool.toolId} className="mb-4">
@@ -165,15 +162,12 @@ export default function Results() {
       {result.totalMonthlySavings === 0 && (
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 mb-8 text-center">
           <p className="text-2xl mb-2">🎉</p>
-          <h3 className="text-lg font-bold text-green-800 mb-1">You're spending well!</h3>
+          <h3 className="text-lg font-bold text-green-800 mb-1">You&apos;re spending well!</h3>
           <p className="text-green-700">Your AI tool stack looks optimized.</p>
         </div>
       )}
 
-      <Button
-        className="w-full mb-4"
-        onClick={() => setShowEmailCapture(true)}
-      >
+      <Button className="w-full mb-4" onClick={() => setShowEmailCapture(true)}>
         📧 Get my full report by email
       </Button>
 
