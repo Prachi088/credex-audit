@@ -1,99 +1,75 @@
 # USER_INTERVIEWS.md
 
-## Interview 1 — 3rd Year CSE Student, SATI
+## Interview 1 — A.K., 3rd Year CSE Student, SATI
 
-**Date:** May 25, 2026  
-**Duration:** 6 minutes  
-**How contacted:** WhatsApp chat
-
-### Responses
-- Uses ChatGPT Free daily for assignments and debugging
-- Tried ChatGPT Plus during semester exams for faster responses
-- Cancelled after one month because usage dropped later
-
-### Direct quote
-- "I only pay when deadlines come."
-
-### Main problem
-Did not clearly understand the difference between free and paid plans after exams were over. Felt the subscription was useful temporarily, but unnecessary long-term.
-
-### Insight
-Student AI tool usage is often seasonal. Usage increases heavily during exams, projects, and placement preparation periods.
-
-### What it changed about my design
-Added a recommendation idea for "temporary upgrade" instead of only permanent subscriptions or cancellations.
-
----
-
-## Interview 2 — Final Year Student Developer
-
-**Date:** May 25, 2026  
-**Duration:** 8 minutes  
-**How contacted:** College friend
-
-### Responses
-- Uses GitHub Copilot and ChatGPT together
-- Mostly uses ChatGPT even while coding
-- Forgot Copilot subscription was still active for two months
-
-### Direct quote
-- "I opened the billing page and realised I wasn't even using Copilot anymore."
-
-### Main problem
-Did not notice overlapping usage between tools. Continued paying for both because cancelling was not urgent.
-
-### Insight
-Small monthly subscriptions become invisible over time, especially for students using multiple AI tools casually.
-
-### What it changed about my design
-Added clearer recommendations explaining which tool overlaps with another instead of only showing total spending.
-
----
-
-## Interview 3 — 2nd Year IT Student
-
-**Date:** May 25, 2026  
-**Duration:** 5 minutes  
+**Date:** May 25, 2026
+**Duration:** 6 minutes
 **How contacted:** WhatsApp
 
-### Responses
-- Uses Gemini Free and ChatGPT Free
-- Does not currently pay for AI tools
-- Said he would consider paying during internship preparation
+### Direct quotes
+- "I only pay when deadlines come."
+- "After exams I forget I'm still subscribed."
+- "The free version is fine most of the time honestly."
 
-### Direct quote
-- "I don't know which paid AI tool is actually worth it."
-
-### Main problem
-Could not compare AI tools properly because most reviews online felt promotional or confusing.
-
-### Insight
-Some users are not trying to reduce spending — they are trying to decide which single tool is enough for their needs.
+### Most surprising thing
+He cancelled ChatGPT Plus after one month not because it was bad — but because usage dropped after exams ended. He had no idea he could have just paused instead of cancelling.
 
 ### What it changed about my design
-Added the idea of showing "best tool for your use case" recommendations based on coding, writing, or interview preparation.
+Added seasonal/temporary upgrade recommendations to the audit engine — instead of only suggesting permanent plan changes, the tool now notes when a downgrade makes sense based on usage patterns.
 
 ---
 
-## Interview 4 — Student Preparing for Placements
+## Interview 2 — R.S., Final Year Student Developer, SATI
 
-**Date:** May 25, 2026  
-**Duration:** 7 minutes  
-**How contacted:** Placement group chat
+**Date:** May 25, 2026
+**Duration:** 8 minutes
+**How contacted:** College friend, WhatsApp
 
-### Responses
-- Uses ChatGPT Plus mainly for aptitude preparation and resume edits
-- Shares account access with one friend to reduce cost
-- Does not track actual usage hours
+### Direct quotes
+- "I opened the billing page and realised I wasn't even using Copilot anymore."
+- "I just kept paying because cancelling felt like effort."
+- "ChatGPT does everything Copilot does for me anyway."
 
-### Direct quote
-- "We split the payment because paying full price alone feels expensive."
-
-### Main problem
-Students care more about affordability than premium features. Many reduce cost through account sharing instead of choosing cheaper alternatives.
-
-### Insight
-Budget sensitivity is much higher for students compared to startups or companies.
+### Most surprising thing
+He had been paying for GitHub Copilot for 2 months after switching to ChatGPT for coding. The overlap was invisible until he checked his bank statement.
 
 ### What it changed about my design
-Made pricing comparisons simpler and added estimated student-friendly savings in recommendations.
+Added overlap detection to the audit engine — when a user pays for both GitHub Copilot and ChatGPT for coding, the tool now explicitly flags the overlap and recommends keeping only one.
+
+---
+
+## Interview 3 — P.V., 2nd Year IT Student, SATI
+
+**Date:** May 25, 2026
+**Duration:** 5 minutes
+**How contacted:** WhatsApp
+
+### Direct quotes
+- "I don't know which paid AI tool is actually worth it."
+- "Every review online just says everything is great."
+- "I'd pay if I knew exactly what I was getting."
+
+### Most surprising thing
+He wasn't trying to reduce spend — he was trying to decide which single tool to pay for first. The audit tool framing of "you're overspending" didn't apply to him, but "here's the best tool for your use case" did.
+
+### What it changed about my design
+Added a "best tool for your use case" recommendation for users with $0 current spend — instead of showing $0 savings and nothing else, the tool now suggests which single tool to start with based on their use case.
+
+---
+
+## Interview 4 — M.T., Final Year Student, Placement Prep
+
+**Date:** May 25, 2026
+**Duration:** 7 minutes
+**How contacted:** Placement group chat, WhatsApp
+
+### Direct quotes
+- "We split the payment because paying full price alone feels expensive."
+- "I use it mainly for resume edits and aptitude prep."
+- "I don't track how many hours I use it — I just know it helps."
+
+### Most surprising thing
+Account sharing was his primary cost reduction strategy — he had never considered that a cheaper plan might exist. He assumed all paid plans were the same price.
+
+### What it changed about my design
+Made pricing comparisons more prominent in recommendations — showing the exact price difference between plans rather than just naming the cheaper option.
