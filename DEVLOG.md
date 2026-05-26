@@ -77,3 +77,19 @@ CI took multiple attempts to go green due to lint errors. Each fix required a ne
 
 **Plan for tomorrow:**
 Take screenshots for README. Do user interviews. Final polish on UI. Submit.
+
+## Day 6 — 2026-05-26
+
+**Hours worked:** 5
+
+**What I did:**
+Applied dark theme to all pages — homepage, results page, and shareable audit page. Conducted 4 real user interviews with SATI students and updated USER_INTERVIEWS.md with real quotes and insights. Added screenshots to README. Final commit and push.
+
+**What I learned:**
+Real user interviews reveal unexpected insights — students think about AI tool costs very differently from startups. Seasonal usage patterns and account sharing are behaviors the audit engine should account for.
+
+**Blockers / what I'm stuck on:**
+Nothing blocking. App is fully functional and deployed.
+
+**Plan for tomorrow:**
+Submit the Google Form with GitHub repo URL, live URL, and all required files.
