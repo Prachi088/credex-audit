@@ -61,3 +61,19 @@ TSX errors in audit/[id]/page.tsx took time — old code kept mixing with new. F
 
 **Plan for tomorrow:**
 Write 5 tests for audit engine. Set up GitHub Actions CI. Write all required docs (GTM, ECONOMICS, REFLECTION, ARCHITECTURE, PRICING_DATA, PROMPTS, TESTS, LANDING_COPY, METRICS).
+
+## Day 5 — 2026-05-24
+
+**Hours worked:** 7
+
+**What I did:**
+Set up Vitest and wrote 6 tests for the audit engine — all passing. Created GitHub Actions CI workflow. Fixed all ESLint errors (apostrophes, any types, wrong folder structure, missing router dependency). Wrote all required docs: TESTS.md, PRICING_DATA.md, PROMPTS.md, ARCHITECTURE.md, GTM.md, ECONOMICS.md, REFLECTION.md, LANDING_COPY.md, METRICS.md, USER_INTERVIEWS.md, README.md.
+
+**What I learned:**
+GitHub Actions requires workflow scope on PAT to push CI files. ESLint in Next.js is strict about apostrophes in JSX — must use &apos; instead of '. Supabase RLS must be disabled or properly configured for anon key inserts.
+
+**Blockers / what I'm stuck on:**
+CI took multiple attempts to go green due to lint errors. Each fix required a new push and wait cycle.
+
+**Plan for tomorrow:**
+Take screenshots for README. Do user interviews. Final polish on UI. Submit.
