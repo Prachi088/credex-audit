@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI Spend Audit — Find out where you're overpaying on AI tools",
     description: "Free tool for startups to audit their AI tool spend. Find overspend, get recommendations, and save money.",
-    url: "https://credex-audit.vercel.app",
+    url: "https://credex-audit-pink.vercel.app",
     siteName: "AI Spend Audit",
     type: "website",
   },
