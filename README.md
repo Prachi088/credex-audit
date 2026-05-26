@@ -76,3 +76,16 @@ Row Level Security blocked anon key inserts. For a 7-day MVP with no sensitive P
 - **Deployment:** Vercel
 - **Tests:** Vitest
 - **CI:** GitHub Actions
+
+## Screenshots
+
+**Homepage — Spend Input Form**
+![Homepage](screenshots/homepage.png)
+
+**Results Page — Audit Breakdown**
+![Results](screenshots/results.png)
+
+**Shareable Public Audit Page**
+![Shareable](screenshots/shareable.png)
+
+> Full demo: Run the audit at https://credex-audit-pink.vercel.app
